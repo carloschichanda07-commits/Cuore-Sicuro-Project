@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/uploads/logo_CS_NoSfondo.png">
+    <title>Cuore Sicuro - Prevenzione Cyberbullismo</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        :root {
+            --primary-color: #165175;
+            --primary-dark: #0f3d59;
+            --primary-light: #eef5fb; 
+            --accent-green: #00b67a;
+            --accent-green-hover: #009665;
+            --danger-red: #d9534f;
+            --danger-red-hover: #c9302c;
+            --bg-white: #ffffff;
+            --bg-body: #f8fbff; 
+            --text-dark: #333333;
+            --text-medium: #555555;
+            --border-light: #e6eff5;
+            --radius-md: 8px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 4px 15px rgba(22, 81, 117, 0.05);
+            --shadow-hover: 0 8px 25px rgba(22, 81, 117, 0.12);
+            --transition-speed: 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-medium);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        h1, h2, h3 { color: var(--primary-color); }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-padding { padding: 60px 0; }
+        .grid-2-cols {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            align-items: stretch;
+        }
+
+        header { 
+            background: var(--bg-white); 
+            padding: 15px 0; 
+            box-shadow: var(--shadow-sm); 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+        }
+        
+        .header-content { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+
+        .LOGO {
+            text-decoration: none; 
+            color: var(--primary-color); 
+            font-weight: 800;
+            font-size: 1.4rem;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .main-nav ul { 
+            display: flex; 
+            list-style: none; 
+            gap: 25px; 
+            margin: 0; 
+            padding: 0; 
+            align-items: center;
+        }
+
+        .voci { 
+            text-decoration: none; 
+            color: var(--primary-color); 
+            font-weight: 600; 
+            font-size: 0.95rem;
+            transition: color var(--transition-speed);
+        }
+
+        .voci:hover { color: var(--accent-green); }
+
+        .btn-login {
+            padding: 10px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: all var(--transition-speed);
+            border: 2px solid transparent;
+            background-color: var(--primary-color);
+            color: var(--bg-white);
+        }
+        .btn-login:hover { background-color: var(--primary-dark); color: var(--bg-white); }
+
+        .menu-toggle { display: none; background: none; border: none; cursor: pointer; padding: 5px; }
+        .menu-toggle span { display: block; width: 25px; height: 3px; background: var(--primary-color); margin: 5px 0; transition: var(--transition-speed); }
+        .mobile-auth { display: none; }
+
+        .card-info {
+            background-color: var(--bg-white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            padding: 40px;
+            border-top: 4px solid var(--primary-color);
+            height: 100%;
+            box-sizing: border-box;
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+        }
+        .card-info:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-info h2 {
+            color: var(--primary-color); font-size: 1.6rem; margin-top: 0; margin-bottom: 20px;
+            padding-bottom: 12px; position: relative;
+        }
+        .card-info h2::after {
+            content: ''; position: absolute; left: 0; bottom: 0; width: 50px; height: 4px;
+            background: var(--accent-green); border-radius: 2px;
+        }
+
+        .card-info p { line-height: 1.8; color: var(--text-medium); font-size: 1.05rem; }
+
+        .card-placeholder { background: transparent !important; border: none !important; padding: 0 !important; box-shadow: none !important; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+        .card-placeholder:hover { transform: none; box-shadow: none; }
+
+        .btn-green-outline {
+            background-color: var(--accent-green); color: var(--bg-white);
+            border: none; padding: 12px 30px; border-radius: 30px;
+            text-decoration: none; font-weight: bold; display: inline-block;
+            margin-top: 15px; transition: background var(--transition-speed);
+            align-self: flex-start; 
+        }
+        .btn-green-outline:hover { background-color: var(--accent-green-hover); color: var(--bg-white); }
+
+        .bg-light {
+            background: linear-gradient(135deg, var(--bg-white) 0%, var(--primary-light) 100%);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+            padding: 0; overflow: hidden; display: grid; grid-template-columns: 1fr 1fr;
+            align-items: stretch; margin-top: 60px; margin-bottom: 60px;
+        }
+
+        .placeholder-img-large { height: 100%; min-height: 300px; }
+        .help-content { padding: 50px; display: flex; flex-direction: column; justify-content: center; }
+        .help-content h2 { color: var(--primary-color); font-size: 2rem; margin-top: 0; margin-bottom: 15px; }
+        .help-content p { color: var(--text-medium); font-size: 1.1rem; margin-bottom: 30px; line-height: 1.6; font-weight: 500; }
+
+        .btn-primary-outline {
+            background-color: transparent; color: var(--primary-color);
+            padding: 12px 35px; border-radius: 30px; text-decoration: none;
+            font-weight: bold; display: inline-block; transition: all var(--transition-speed);
+            border: 2px solid var(--primary-color);
+            align-self: flex-start;
+        }
+        .btn-primary-outline:hover { background-color: var(--primary-color); color: var(--bg-white); }
+
+        .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 30px; }
+        
+        .news-card {
+            background: var(--bg-white); border-radius: var(--radius-lg); overflow: hidden;
+            box-shadow: var(--shadow-sm); display: flex; flex-direction: column;
+            border: 1px solid var(--border-light); transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+        }
+        .news-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-hover); }
+
+        .img-box-notizie {
+            height: 220px; width: 100%; background-color: var(--primary-light);
+            background-size: cover; background-position: center;
+            display: flex; align-items: center; justify-content: center; color: var(--primary-color); font-weight: bold;
+        }
+
+        .news-content { padding: 25px; display: flex; flex-direction: column; flex-grow: 1; }
+        .news-content h3 { color: var(--text-dark); margin-top: 0; margin-bottom: 15px; font-size: 1.25rem; font-weight: 700; line-height: 1.4; }
+        .news-excerpt { color: var(--text-medium); font-size: 0.95rem; line-height: 1.6; margin-bottom: 25px; flex-grow: 1; }
+
+        .btn-notizie {
+            display: inline-block; background-color: var(--primary-light); color: var(--primary-color);
+            padding: 10px 20px; text-decoration: none; border-radius: var(--radius-md);
+            font-weight: bold; text-align: center; transition: background var(--transition-speed); border: none;
+        }
+        .btn-notizie:hover { background-color: var(--primary-color); color: var(--bg-white); }
+
+        .text-center { text-align: center; }
+        
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            .desktop-auth { display: none; }
+            .mobile-auth { display: block; margin-top: 20px; width: 100%; text-align: center; }
+            .mobile-auth .btn-login { display: block; width: 80%; margin: 0 auto; }
+            
+            .main-nav { 
+                position: absolute; top: 100%; left: -100%; width: 100%; height: 100vh; 
+                background: var(--bg-white); transition: 0.4s ease-in-out; 
+                display: flex; flex-direction: column; padding: 30px 20px;
+                box-shadow: var(--shadow-sm);
+            }
+            .main-nav.active { left: 0; }
+            .main-nav ul { flex-direction: column; align-items: center; width: 100%; }
+            .main-nav ul li { margin-bottom: 20px; font-size: 1.2rem; }
+
+            .grid-2-cols, .bg-light { grid-template-columns: 1fr; gap: 20px; }
+            .section-padding { padding: 40px 0; }
+            .card-info { padding: 25px; }
+            .placeholder-img-large { min-height: 200px; }
+            .help-content { padding: 30px 20px; text-align: center; }
+            .help-content .btn-primary-outline { align-self: center; }
+        }
+
+        footer {
+            background-color: var(--primary-color) !important;
+            color: var(--bg-white) !important;
+            padding: 40px 0 !important;
+            margin-top: 60px;
+        }
+        .footer-content { text-align: center; }
+        footer .logo { margin-bottom: 15px; }
+        .footer-links { margin-bottom: 15px; color: rgba(255, 255, 255, 0.4) !important; }
+        .footer-links a { color: var(--bg-white) !important; text-decoration: none !important; margin: 0 12px; font-weight: 600; transition: color var(--transition-speed); }
+        .footer-links a:hover { color: var(--accent-green) !important; }
+        footer .copyright { color: rgba(255, 255, 255, 0.7) !important; font-size: 0.9rem; margin: 0; }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <a href="index.html" class="LOGO">
+                    <img src="logo_CS_scritta.png" alt="Logo Cuore Sicuro" style="max-height: 60px; width: auto; display: block;">
+                </a>
+            </div>
+            
+            <button class="menu-toggle" aria-label="Apri menu">
+                <span></span><span></span><span></span>
+            </button>
+
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="chi-siamo.html" class="voci">CHI SIAMO</a></li>
+                    <li><a href="form.html" class="voci">CONTATTACI</a></li>
+                    <li><a href="notizie.html" class="voci">NOTIZIE</a></li>
+                    <li><a href="dashboard.html" class="voci">ADMIN (DEMO)</a></li>
+                    <li class="mobile-auth">
+                        <a href="area-utente.html" class="btn-login">AREA UTENTE</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="auth-box desktop-auth">
+                <a href="area-utente.html" class="btn-login">AREA UTENTE (DEMO)</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="grid-2-cols section-padding">
+            <div class="card-info">
+                <h2>CHI SIAMO</h2>
+                <div>
+                    <p>Siamo un progetto dedicato alla prevenzione del cyberbullismo e alla promozione di un uso consapevole della rete. Il nostro obiettivo è informare, aiutare e supportare ragazzi, famiglie e insegnanti.</p><br>
+                    <p>Crediamo che internet debba essere un luogo sicuro per tutti, dove poter esprimersi senza paura.</p>
+                </div>
+            </div>
+
+            <div class="card-info">
+                <div class="card-placeholder">
+                    <h2>PERCHÉ SCEGLIERE NOI?</h2>
+                    <div>
+                        <p>✓ Offriamo informazioni chiare e affidabili <br>
+                            ✓ Aiutiamo a riconoscere il cyberbullismo <br>
+                            ✓ Forniamo consigli pratici su cosa fare <br>
+                            ✓ Mettiamo a disposizione supporto e contatti utili
+                        </p>
+                    </div>
+                    <p style="margin-top:20px; font-weight:600;">GUARDA LE NOSTRE RECENSIONI:</p>
+                    <a href="http://it.trustpilot.com" class="btn-green-outline">LEGGI I FEEDBACK</a>
+                </div>
+            </div>
+        </section>
+        
+        <section class="grid-2-cols bg-light">
+            <div class="placeholder-img-large">
+                <img src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=80&w=800&auto=format&fit=crop" alt="Mani unite - Supporto" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div class="help-content">
+                <h2>HAI BISOGNO DI AIUTO?</h2>
+                <p>Non sei solo. Se stai affrontando una situazione difficile o vuoi semplicemente maggiori informazioni, compila il nostro form per metterti in contatto con noi in modo totalmente sicuro.</p>
+                <a href="form.html" class="btn-primary-outline">COMPILA IL FORM</a>
+            </div>
+        </section>
+
+        <section class="section-padding">
+            <h2 class="text-center">ULTIME NOTIZIE</h2>
+            <div class="news-grid">
+                <div class="news-card">
+                    <div class="img-box-notizie" style="background-image: url('https://images.unsplash.com/photo-1573164713988-8665fc963095?q=80&w=800&auto=format&fit=crop');"></div>
+                    <div class="news-content">
+                        <h3>L'importanza dell'empatia digitale</h3>
+                        <p class="news-excerpt">Scopri come piccoli gesti online possono fare una grande differenza nella vita di chi ci circonda...</p>
+                        <a href="notizia-dettaglio.html" class="btn-notizie">LEGGI DI PIÙ</a>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <div class="img-box-notizie" style="background-image: url('https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=800&auto=format&fit=crop');"></div>
+                    <div class="news-content">
+                        <h3>Come riconoscere i segnali d'allarme</h3>
+                        <p class="news-excerpt">Una guida pratica per genitori e docenti per individuare i primi sintomi di disagio nei ragazzi...</p>
+                        <a href="notizia-dettaglio.html" class="btn-notizie">LEGGI DI PIÙ</a>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <div class="img-box-notizie" style="background-image: url('https://images.unsplash.com/photo-1517842645767-c639042777db?q=80&w=800&auto=format&fit=crop');"></div>
+                    <div class="news-content">
+                        <h3>Strumenti per la sicurezza online</h3>
+                        <p class="news-excerpt">Le migliori impostazioni per proteggere la propria privacy sui social media più utilizzati...</p>
+                        <a href="notizia-dettaglio.html" class="btn-notizie">LEGGI DI PIÙ</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center" style="margin-top: 50px; margin-bottom: 30px;">
+                <a href="notizie.html" class="btn-primary-outline" style="align-self: center;">VEDI TUTTO L'ARCHIVIO</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="logo" style="margin-bottom: 15px; display: flex; justify-content: center; align-items: center;">
+            <img src="logo_CS_scritta.png" alt="Logo Cuore Sicuro" style="max-height: 75px; width: auto;">
+        </div>
+        <div class="container footer-content" style="padding-top: 40px; border-top: 1px solid rgba(255, 255, 255, 0.2); margin-top: 40px; text-align: center;">
+            <div class="logo" style="color: var(--bg-white); font-weight: 800; font-size: 1.2rem; margin-bottom: 15px; letter-spacing: 1px;">
+                CUORE SICURO
+            </div>
+            <div class="footer-links" style="margin-bottom: 15px; color: rgba(255, 255, 255, 0.5);">
+                <a href="form.html" style="color: var(--bg-white); text-decoration: none; margin: 0 10px;">CONTATTACI</a> | 
+                <a href="chi-siamo.html" style="color: var(--bg-white); text-decoration: none; margin: 0 10px;">CHI SIAMO</a> | 
+                <a href="notizie.html" style="color: var(--bg-white); text-decoration: none; margin: 0 10px;">NOTIZIE</a> |
+                <a href="dashboard.html" style="color: var(--bg-white); text-decoration: none; margin: 0 10px;">ADMIN</a>
+            </div>
+            <p class="copyright" style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem;">
+                © COPYRIGHT 2026 - Cuore Sicuro (Portfolio Showcase)
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        const menuToggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.main-nav');
+        if (menuToggle && nav) {
+            menuToggle.addEventListener('click', () => { nav.classList.toggle('active'); });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/uploads/logo_CS_NoSfondo.png">
+    <title>Area Personale - Cuore Sicuro</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ==========================================================================
+           VARIABILI CSS - IL PANNELLO DI CONTROLLO DEI COLORI
+           ========================================================================== */
+        :root {
+            /* Colori Primari (Brand) */
+            --primary-color: #165175;
+            --primary-dark: #0f3d59;
+            --primary-light: #eef5fb; /* Azzurro chiarissimo per sfondi */
+            
+            /* Colori di Azione */
+            --accent-green: #00b67a;
+            --accent-green-hover: #009665;
+            --danger-red: #d9534f;
+            --danger-red-hover: #c9302c;
+            
+            /* Sfondi e Testi */
+            --bg-white: #ffffff;
+            --bg-body: #f8fbff; /* Uno sfondo appena percettibile per far risaltare le card bianche */
+            --text-dark: #333333;
+            --text-medium: #555555;
+            --border-light: #e6eff5;
+            
+            /* Forme e Ombre (Design System) */
+            --radius-md: 8px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 4px 15px rgba(22, 81, 117, 0.05); /* Ombra con punta di blu */
+            --shadow-hover: 0 8px 25px rgba(22, 81, 117, 0.12);
+            --transition-speed: 0.3s;
+        }
+
+        /* --- STILI GENERALI (Per garantire pulizia se mancano in style.css) --- */
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-medium);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        h1, h2, h3 { color: var(--primary-color); }
+
+        /* --- STILI HEADER RESPONSIVE --- */
+        header { 
+            background: var(--bg-white); 
+            padding: 15px 0; 
+            box-shadow: var(--shadow-sm); 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+        }
+        
+        .header-content { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+
+        .LOGO {
+            text-decoration: none; 
+            color: var(--primary-color); 
+            font-weight: 800;
+            font-size: 1.4rem;
+            letter-spacing: 0.5px;
+        }
+
+        .main-nav ul { 
+            display: flex; 
+            list-style: none; 
+            gap: 25px; 
+            margin: 0; 
+            padding: 0; 
+            align-items: center;
+        }
+
+        .voci { 
+            text-decoration: none; 
+            color: var(--primary-color); 
+            font-weight: 600; 
+            font-size: 0.95rem;
+            transition: color var(--transition-speed);
+        }
+
+        .voci:hover { color: var(--accent-green); }
+
+        /* Pulsanti Auth (Login e Logout standardizzati) */
+        .btn-login, .btn-logout {
+            padding: 10px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: all var(--transition-speed);
+            border: 2px solid transparent;
+        }
+
+        .btn-login {
+            background-color: var(--primary-color);
+            color: var(--bg-white);
+        }
+        .btn-login:hover { background-color: var(--primary-dark); color: var(--bg-white); }
+
+        .btn-logout {
+            background-color: var(--danger-red);
+            color: var(--bg-white);
+        }
+        .btn-logout:hover { background-color: var(--danger-red-hover); color: var(--bg-white); }
+
+        .menu-toggle { 
+            display: none; background: none; border: none; cursor: pointer; padding: 5px;
+        }
+        .menu-toggle span { 
+            display: block; width: 25px; height: 3px; background: var(--primary-color); margin: 5px 0; transition: var(--transition-speed); 
+        }
+        .mobile-auth { display: none; }
+
+        /* Media Query per Mobile */
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            .desktop-auth { display: none; }
+            .mobile-auth { display: block; margin-top: 20px; width: 100%; text-align: center; }
+            .mobile-auth .btn-login, .mobile-auth .btn-logout { display: block; width: 80%; margin: 0 auto; }
+            
+            .main-nav { 
+                position: absolute; top: 100%; left: -100%; width: 100%; height: 100vh; 
+                background: var(--bg-white); transition: 0.4s ease-in-out; 
+                display: flex; flex-direction: column; padding: 30px 20px;
+                box-shadow: var(--shadow-sm);
+            }
+            .main-nav.active { left: 0; }
+            .main-nav ul { flex-direction: column; align-items: center; width: 100%; }
+            .main-nav ul li { margin-bottom: 20px; font-size: 1.2rem; }
+        }
+        
+        
+        /* --- STILI ORIGINALI E NUOVI PER TABS --- */
+        .profile-header {
+            background: linear-gradient(135deg, #165175 0%, #1A4B70 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(22, 81, 117, 0.2);
+            text-align: center;
+        }
+
+        .profile-header h1 { margin: 0 0 10px 0; color: white; font-size: 2.5rem; }
+        .profile-header p { margin: 0; font-size: 1.1rem; opacity: 0.9; color: white; }
+
+        /* MENU A PULSANTI (STILE DASHBOARD) */
+        .tab-menu {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .tab-btn {
+            padding: 12px 25px;
+            border: none;
+            background: #e1e8ed;
+            color: #165175;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .tab-btn.active {
+            background: #165175;
+            color: white;
+        }
+
+        .tab-content { display: none; animation: fadeIn 0.4s ease; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* SEZIONI CONTENUTO */
+        .history-section, .info-section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-top: 4px solid #165175;
+        }
+
+        .history-section h2, .info-section h2 {
+            color: #165175;
+            margin-top: 0;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        /* GRIGLIA DATI UTENTE */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .info-card {
+            background: #f9fbff;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #165175;
+        }
+
+        .info-label { display: block; font-size: 0.8rem; color: #777; text-transform: uppercase; margin-bottom: 5px; }
+        .info-value { font-size: 1.1rem; font-weight: 600; color: #165175; }
+
+        /* STILE MESSAGGI */
+        .message-card {
+            background: #f9fbff;
+            border: 1px solid #dce8f5;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #ccc;
+        }
+
+        .badge-scopo {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        .scopo-aiuto { background-color: #e74c3c; }
+        .scopo-storia { background-color: #3498db; }
+        .message-date { color: #777; font-size: 0.9rem; }
+        .message-body { color: #444; line-height: 1.6; white-space: pre-wrap; font-style: italic; }
+
+        @media (max-width: 600px) { .info-grid { grid-template-columns: 1fr; } }
+        
+        
+        
+        /* --- STILI FINALI FOOTER (Forzati per contrasto sicuro) --- */
+        footer {
+            background-color: var(--primary-color) !important; /* Forza lo sfondo blu istituzionale */
+            color: var(--bg-white) !important;
+            padding: 40px 0 !important;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            text-align: center;
+        }
+
+        footer .logo {
+            color: var(--bg-white) !important;
+            font-weight: 800;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .footer-links {
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.4) !important; /* Colore dei separatori "|" */
+        }
+
+        .footer-links a {
+            color: var(--bg-white) !important;
+            text-decoration: none !important;
+            margin: 0 12px;
+            font-weight: 600;
+            transition: color var(--transition-speed);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-green) !important; /* Un bel tocco di verde quando passi il mouse */
+        }
+
+        footer .copyright {
+            color: rgba(255, 255, 255, 0.7) !important;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+        
+        /* Aggiunta Stile Pulsante Eliminazione */
+        .btn-delete-account {
+            background-color: var(--danger-red);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: background-color var(--transition-speed);
+        }
+        .btn-delete-account:hover {
+            background-color: var(--danger-red-hover);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <a href="index.html" class="LOGO">
+                    <img src="logo_CS_scritta.png" alt="Logo Cuore Sicuro" style="max-height: 60px;">
+                </a>
+            </div>
+            <button class="menu-toggle"><span></span><span></span><span></span></button>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="chi-siamo.html" class="voci">CHI SIAMO</a></li>
+                    <li><a href="form.html" class="voci">CONTATTACI</a></li>
+                    <li><a href="notizie.html" class="voci">NOTIZIE</a></li>
+                    <li class="mobile-auth"><a href="index.html" class="btn-logout">LOG OUT</a></li>
+                </ul>
+            </nav>
+            <div class="auth-box desktop-auth"><a href="index.html" class="btn-logout">LOG OUT</a></div>
+        </div>
+    </header>
+
+    <main class="container section-padding">
+        <div class="profile-header">
+            <h1>Ciao, Visitatore!</h1>
+            <p>Gestisci il tuo profilo fittizio e visualizza la cronologia delle tue attività simulate.</p>
+        </div>
+
+        <div class="tab-menu">
+            <button class="tab-btn active" onclick="openTab(event, 'sez-dati')">I Miei Dati</button>
+            <button class="tab-btn" onclick="openTab(event, 'sez-messaggi')">I Miei Messaggi</button>
+        </div>
+
+        <div id="sez-dati" class="tab-content" style="display: block;">
+            <div class="info-section">
+                <h2>INFORMAZIONI ACCOUNT (DEMO)</h2>
+                <div class="info-grid">
+                    <div class="info-card"><span class="info-label">Nome e Cognome</span><span class="info-value">Visitatore Portfolio</span></div>
+                    <div class="info-card"><span class="info-label">Email</span><span class="info-value">visitatore@github.com</span></div>
+                    <div class="info-card"><span class="info-label">Ruolo</span><span class="info-value">UTENTE DEMO</span></div>
+                    <div class="info-card"><span class="info-label">Scuola di Provenienza</span><span class="info-value">I.I.S Gastaldi Abba</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="sez-messaggi" class="tab-content" style="display: none;">
+            <div class="history-section">
+                <h2>CRONOLOGIA MESSAGGI</h2>
+                <div class="message-card">
+                    <div class="message-header">
+                        <div><span class="badge-scopo scopo-aiuto">Richiesta di Aiuto</span></div>
+                        <div class="message-date">Inviato il: Oggi</div>
+                    </div>
+                    <div class="message-body">"Questo è un messaggio di test per mostrare il funzionamento della UI."</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="logo" style="margin-bottom: 15px; display: flex; justify-content: center; align-items: center;">
+            <img src="logo_CS_scritta.png" alt="Logo Cuore Sicuro" style="max-height: 75px; width: auto;">
+        </div>
+        <div class="container footer-content" style="padding-top: 40px; border-top: 1px solid rgba(255, 255, 255, 0.2); margin-top: 40px; text-align: center;">
+            <div class="logo" style="color: var(--bg-white); font-weight: 800; font-size: 1.2rem; margin-bottom: 15px; letter-spacing: 1px;">
+                CUORE SICURO
+            </div>
+            <div class="footer-links" style="margin-bottom: 15px; color: rgba(255, 255, 255, 0.5);">
+                <a href="form.html" style="color: var(--bg-white); text-decoration: none; margin: 0 10px;">CONTATTACI</a> | 
+                <a href="chi-siamo.html" style="color: var(--bg-white); text-decoration: none; margin: 0 10px;">CHI SIAMO</a> | 
+                <a href="notizie.html" style="color: var(--bg-white); text-decoration: none; margin: 0 10px;">NOTIZIE</a> |
+                <a href="dashboard.html" style="color: var(--bg-white); text-decoration: none; margin: 0 10px;">ADMIN</a>
+            </div>
+            <p class="copyright" style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem;">
+                © COPYRIGHT 2026 - Cuore Sicuro (Portfolio Showcase)
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) tabcontent[i].style.display = "none";
+            tablinks = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < tablinks.length; i++) tablinks[i].classList.remove("active");
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.classList.add("active");
+        }
+        // --- SCRIPT PER L'HEADER RESPONSIVE (MENU HAMBURGER) ---
+        const menuToggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.main-nav');
+
+        if (menuToggle && nav) {
+            menuToggle.addEventListener('click', () => {
+                nav.classList.toggle('active');
+            });
+        }
+    </script>
+</body>
+</html>

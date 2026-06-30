@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/uploads/logo_CS_NoSfondo.png">
+    <title>Dettaglio Notizia - Cuore Sicuro</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* --- DEFINIZIONE COLORE BLU HEADER --- */
+        :root {
+            /* Questo è il blu scuro della fascia dell'header in alto */
+            --blu-titolo: #165175; 
+        }
+
+        /* --- STILE LINK INDIETRO --- */
+        .back-link-container {
+            margin-bottom: 25px;
+        }
+
+        .back-link {
+            color: var(--blu-titolo); /* ORA È DELLO STESSO COLORE DELL'HEADER */
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 800; 
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: opacity 0.3s ease;
+        }
+
+        .back-link:hover {
+            opacity: 0.7; 
+        }
+
+        /* Layout a griglia Screenshot 113 */
+        .article-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 20px;
+            align-items: stretch;
+        }
+
+        /* --- PARTE SINISTRA: IMMAGINE --- */
+        .article-visual {
+            height: 400px;
+        }
+
+        .article-visual img, .placeholder-img-large {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 12px; 
+            background-color: #eeeeee;
+        }
+
+        /* --- PARTE DESTRA: RIQUADRO DATI --- */
+        .article-info {
+            background-color: #ffffff; 
+            border: 1px solid #e0e0e0; 
+            border-radius: 12px; 
+            padding: 30px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02); 
+        }
+
+        .info-row {
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 15px;
+            color: #333;
+        }
+
+        .info-row strong {
+            font-weight: bold;
+            color: #000;
+        }
+
+        /* --- STILE HASHTAG --- */
+        .hashtag-container {
+            padding-top: 20px;
+        }
+
+        .tag {
+            background-color: #17a2b8; 
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px; 
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin-right: 5px;
+            text-transform: uppercase;
+        }
+
+        /* --- TITOLO PRINCIPALE --- */
+        .main-article-title {
+            color: var(--blu-titolo); /* ORA È DELLO STESSO COLORE DELL'HEADER */
+            margin-bottom: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+        
+        
+        
+        /* --- STILI FINALI FOOTER (Forzati per contrasto sicuro) --- */
+        footer {
+            background-color: var(--primary-color) !important; /* Forza lo sfondo blu istituzionale */
+            color: var(--bg-white) !important;
+            padding: 40px 0 !important;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            text-align: center;
+        }
+
+        footer .logo {
+            color: var(--bg-white) !important;
+            font-weight: 800;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .footer-links {
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.4) !important; /* Colore dei separatori "|" */
+        }
+
+        .footer-links a {
+            color: var(--bg-white) !important;
+            text-decoration: none !important;
+            margin: 0 12px;
+            font-weight: 600;
+            transition: color var(--transition-speed);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-green) !important; /* Un bel tocco di verde quando passi il mouse */
+        }
+
+        footer .copyright {
+            color: rgba(255, 255, 255, 0.7) !important;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* ====================================================================
+           MODIFICA AGGIUNTA: RESPONSIVITÀ PER DISPOSITIVI MOBILI
+           ==================================================================== */
+        @media (max-width: 992px) {
+            .article-grid {
+                grid-template-columns: 1fr; /* Incolonna l'immagine sopra al testo */
+                gap: 25px; /* Riduce lo spazio vuoto tra l'immagine e i dettagli */
+            }
+
+            .article-visual {
+                height: 300px; /* Riduce l'altezza dell'immagine sui telefoni per non occupare tutto lo schermo */
+            }
+
+            .article-info {
+                padding: 25px 20px; /* Riduce il padding interno del box bianco sui telefoni */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <a href="index.html" class="LOGO">
+                    <img src="logo_CS_scritta.png" alt="Logo Cuore Sicuro" style="max-height: 60px; width: auto; display: block;">
+                </a>
+            </div>
+            
+            <button class="menu-toggle" aria-label="Apri menu">
+                <span></span><span></span><span></span>
+            </button>
+
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="chi-siamo.html" class="voci">CHI SIAMO</a></li>
+                    <li><a href="form.html" class="voci">CONTATTACI</a></li>
+                    <li><a href="notizie.html" class="voci">NOTIZIE</a></li>
+                    <li><a href="dashboard.html" class="voci">ADMIN (DEMO)</a></li>
+                    <li class="mobile-auth">
+                        <a href="area-utente.html" class="btn-login">AREA UTENTE</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="auth-box desktop-auth">
+                <a href="area-utente.html" class="btn-login">AREA UTENTE (DEMO)</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <div class="back-link-container">
+            <a href="notizie.html" class="back-link">← TORNA ALLE NOTIZIE</a>
+        </div>
+
+        <section class="article-header">
+    <h1 class="main-article-title">L'IMPORTANZA DEL DAE NELLE SCUOLE</h1>
+    
+    <div class="article-grid">
+        
+        <div class="article-visual">
+            <img src="Cyberbullismo_reference.png" alt="Copertina">
+        </div>
+
+        <div class="article-info">
+            <div class="info-row">
+                <strong>Autore:</strong> Redazione Cuore Sicuro
+            </div>
+            
+            <div class="info-row">
+                <strong>Durata Lettura:</strong> 5 minuti
+            </div>
+            
+            <div class="info-row" style="border-bottom: none;">
+                <strong>Pubblicato il:</strong> 30/06/2026
+            </div>
+            
+            <div class="hashtag-container">
+                <strong style="display:block; margin-bottom:10px;">HASHTAG:</strong>
+                <span class="tag">#CUORESICURO</span> 
+                <span class="tag">#PRIMOSOCCORSO</span> 
+                <span class="tag">#PREVENZIONE</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="article-content" style="margin-top: 60px; line-height: 1.8; font-size: 1.1rem; color: #444;">
+    <p>
+        Il progetto Cuore Sicuro prosegue con l'obiettivo di rendere le nostre scuole ambienti più sicuri per tutti. 
+        L'installazione dei nuovi defibrillatori DAE rappresenta un passo fondamentale nella catena della sopravvivenza.
+    </p>
+    <br>
+    <p>
+        Sappiamo che in caso di arresto cardiaco, ogni minuto è prezioso. Avere a disposizione un dispositivo DAE, 
+        unitamente alla formazione ricevuta dagli studenti e dai docenti, può fare realmente la differenza tra la vita e la morte.
+    </p>
+    <br>
+    <p>
+        Invitiamo tutti a partecipare ai prossimi workshop formativi che si terranno presso l'Aula Magna.
+    </p>
+    
+    <div style="text-align: center; margin-top: 60px;">
+        <a href="notizie.html" style="background-color: var(--blu-titolo, #165175); color: white; padding: 12px 35px; border-radius: 30px; text-decoration: none; font-weight: bold; display: inline-block; letter-spacing: 1px; text-transform: uppercase; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+            ← Torna a tutte le notizie
+        </a>
+    </div>
+</section>
+    </main>
+
+    <footer>
+        <div class="logo" style="margin-bottom: 15px; display: flex; justify-content: center; align-items: center;">
+            <img src="logo_CS_scritta.png" alt="Logo Cuore Sicuro" style="max-height: 75px; width: auto;">
+        </div>
+        <div class="container footer-content" style="padding-top: 40px; border-top: 1px solid rgba(255, 255, 255, 0.2); margin-top: 40px; text-align: center;">
+            <div class="logo" style="color: var(--bg-white); font-weight: 800; font-size: 1.2rem; margin-bottom: 15px; letter-spacing: 1px;">
+                CUORE SICURO
+            </div>
+            <div class="footer-links" style="margin-bottom: 15px; color: rgba(255, 255, 255, 0.5);">
+                <a href="form.html" style="color: var(--bg-white); text-decoration: none; margin: 0 10px;">CONTATTACI</a> | 
+                <a href="chi-siamo.html" style="color: var(--bg-white); text-decoration: none; margin: 0 10px;">CHI SIAMO</a> | 
+                <a href="notizie.html" style="color: var(--bg-white); text-decoration: none; margin: 0 10px;">NOTIZIE</a> |
+                <a href="dashboard.html" style="color: var(--bg-white); text-decoration: none; margin: 0 10px;">ADMIN</a>
+            </div>
+            <p class="copyright" style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem;">
+                © COPYRIGHT 2026 - Cuore Sicuro (Portfolio Showcase)
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        const menuToggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.main-nav');
+        if (menuToggle && nav) {
+            menuToggle.addEventListener('click', () => { nav.classList.toggle('active'); });
+        }
+    </script>
+</body>
+</html>

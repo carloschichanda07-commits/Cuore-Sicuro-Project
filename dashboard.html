@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/uploads/logo_CS_NoSfondo.png">
+    <title>Admin Dashboard (Demo) - Cuore Sicuro</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary-color: #165175;
+            --primary-dark: #0f3d59;
+            --primary-light: #eef5fb; 
+            --accent-green: #00b67a;
+            --accent-green-hover: #009665;
+            --danger-red: #d9534f;
+            --danger-red-hover: #c9302c;
+            --bg-white: #ffffff;
+            --bg-body: #f8fbff; 
+            --text-dark: #333333;
+            --text-medium: #555555;
+            --border-light: #e6eff5;
+            --radius-md: 8px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 4px 15px rgba(22, 81, 117, 0.05); 
+            --shadow-hover: 0 8px 25px rgba(22, 81, 117, 0.12);
+            --transition-speed: 0.3s;
+        }
+
+        body { background-color: var(--bg-body); color: var(--text-medium); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
+        h1, h2, h3 { color: var(--primary-color); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; box-sizing: border-box; }
+        .section-padding { padding: 40px 0; }
+        .subtitle { margin-top: -10px; margin-bottom: 25px; color: var(--text-medium); font-size: 1rem; }
+
+        header { background: var(--bg-white); padding: 15px 0; box-shadow: var(--shadow-sm); position: sticky; top: 0; z-index: 1000; }
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        .LOGO { text-decoration: none; color: var(--primary-color); font-weight: 800; font-size: 1.4rem; }
+        .main-nav ul { display: flex; list-style: none; gap: 25px; margin: 0; padding: 0; align-items: center; }
+        .voci { text-decoration: none; color: var(--primary-color); font-weight: 600; font-size: 0.95rem; }
+        .btn-logout { padding: 10px 24px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 0.9rem; background-color: var(--danger-red); color: var(--bg-white); }
+        .menu-toggle { display: none; }
+        .mobile-auth { display: none; }
+
+        .admin-nav { display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 2px solid var(--border-light); padding-bottom: 12px; overflow-x: auto; }
+        .admin-nav-item { cursor: pointer; font-weight: 700; color: var(--primary-color); padding: 10px 20px; border-radius: 30px; background-color: var(--bg-white); border: 1px solid var(--border-light); font-size: 0.85rem; white-space: nowrap; transition: all var(--transition-speed); }
+        .admin-nav-item.active { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; margin-top: 20px; }
+        .chart-card { background: var(--bg-white); border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border-light); display: flex; flex-direction: column; align-items: center; }
+        .chart-card h3 { font-size: 1rem; margin-bottom: 15px; border-bottom: 1px solid var(--border-light); padding-bottom: 10px; width: 100%; text-align: center; }
+        .chart-container { position: relative; width: 100%; height: 240px; }
+
+        .admin-table { width: 100%; border-collapse: collapse; background: var(--bg-white); margin-top: 20px; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); }
+        .admin-table th, .admin-table td { padding: 15px; text-align: left; font-size: 14px; border-bottom: 1px solid var(--border-light); }
+        .admin-table th { background-color: var(--primary-light); color: var(--primary-color); font-weight: 700; text-transform: uppercase; font-size: 0.8rem; }
+        .status-badge { padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; display: inline-block; }
+        .badge-story { background: var(--primary-light); color: var(--primary-color); }
+        .badge-help { background: #FFE4E6; color: #BE123C; }
+
+        .btn-small { padding: 8px 14px; border-radius: 20px; font-weight: bold; color: white; background-color: var(--primary-color); text-decoration: none; font-size: 0.8rem; }
+        .btn-danger { background-color: var(--danger-red); }
+        .btn-warning { background-color: #f39c12; }
+
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; background: none; border: none; cursor: pointer; padding: 5px; }
+            .menu-toggle span { display: block; width: 25px; height: 3px; background: var(--primary-color); margin: 5px 0; }
+            .desktop-auth { display: none; }
+            .mobile-auth { display: block; margin-top: 20px; width: 100%; text-align: center; }
+            .main-nav { position: absolute; top: 100%; left: -100%; width: 100%; height: 100vh; background: var(--bg-white); transition: 0.4s; display: flex; flex-direction: column; padding: 30px 20px; }
+            .main-nav.active { left: 0; }
+            .main-nav ul { flex-direction: column; }
+            .admin-table thead { display: none; }
+            .admin-table tr { display: block; margin-bottom: 20px; border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 15px; }
+            .admin-table td { display: block; text-align: right; padding-left: 50%; position: relative; }
+            .admin-table td::before { content: attr(data-label); position: absolute; left: 15px; font-weight: bold; color: var(--primary-color); }
+        }
+
+        footer { background-color: var(--primary-color); color: var(--bg-white); padding: 40px 0; margin-top: 60px; text-align: center; }
+        .footer-links a { color: var(--bg-white); text-decoration: none; margin: 0 12px; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <a href="index.html" class="LOGO">
+                    <img src="logo_CS_scritta.png" alt="Logo Cuore Sicuro" style="max-height: 60px;">
+                </a>
+            </div>
+            <button class="menu-toggle"><span></span><span></span><span></span></button>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="chi-siamo.html" class="voci">CHI SIAMO</a></li>
+                    <li><a href="form.html" class="voci">CONTATTACI</a></li>
+                    <li><a href="notizie.html" class="voci">NOTIZIE</a></li>
+                    <li class="mobile-auth"><a href="index.html" class="btn-logout">LOG OUT</a></li>
+                </ul>
+            </nav>
+            <div class="auth-box desktop-auth"><a href="index.html" class="btn-logout">LOG OUT</a></div>
+        </div>
+    </header>
+
+    <main class="container section-padding">
+        
+        <h2>Dashboard Amministrativa (Showcase)</h2>
+        
+        <div class="admin-nav">
+            <div class="admin-nav-item active" id="nav-statistiche" onclick="openTab('statistiche')">STATISTICHE SITO</div>
+            <div class="admin-nav-item" id="nav-messaggi" onclick="openTab('messaggi')">MESSAGGI RICEVUTI</div>
+            <div class="admin-nav-item" id="nav-utenti" onclick="openTab('utenti')">GESTIONE UTENTI</div>
+        </div>
+
+        <section id="statistiche" class="tab-content active">
+            <p class="subtitle">Monitoraggio complessivo delle interazioni simulate per il portfolio.</p>
+            <div class="stats-grid">
+                <div class="chart-card">
+                    <h3>Form Ricevuti</h3>
+                    <div class="chart-container"><canvas id="chartGastaldiTempo"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <h3>Ripartizione per Sesso</h3>
+                    <div class="chart-container"><canvas id="chartSesso"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <h3>Gruppo d'Appartenenza</h3>
+                    <div class="chart-container"><canvas id="chartGruppo"></canvas></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="messaggi" class="tab-content">
+            <p class="subtitle">Gestione simulata delle storie e richieste d'aiuto.</p>
+            <table class="admin-table">
+                <thead>
+                    <tr><th>Data</th><th>Mittente</th><th>Scopo</th><th>Messaggio</th><th>Azioni</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td data-label="Data">Oggi</td>
+                        <td data-label="Mittente"><strong>Anonimo</strong><br>studente@mail.it</td>
+                        <td data-label="Scopo"><span class="status-badge badge-help">RICHIESTA AIUTO</span></td>
+                        <td data-label="Messaggio">"Vorrei parlare di una situazione che si è creata..."</td>
+                        <td data-label="Azioni"><a href="#" class="btn-small">Rispondi</a></td>
+                    </tr>
+                    <tr>
+                        <td data-label="Data">Ieri</td>
+                        <td data-label="Mittente"><strong>Giulia Bianchi</strong><br>giulia@mail.it</td>
+                        <td data-label="Scopo"><span class="status-badge badge-story">STORIA</span></td>
+                        <td data-label="Messaggio">"Voglio raccontare di come ho superato..."</td>
+                        <td data-label="Azioni"><a href="#" class="btn-small">Leggi</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="utenti" class="tab-content">
+            <p class="subtitle">Lista degli utenti registrati fittizi.</p>
+            <table class="admin-table">
+                <thead>
+                    <tr><th>ID</th><th>Nome e Cognome</th><th>Ruolo</th><th>Azioni</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td data-label="ID">#102</td>
+                        <td data-label="Nome e Cognome"><strong>Marco Rossi</strong></td>
+                        <td data-label="Ruolo">Studente</td>
+                        <td data-label="Azioni"><a href="#" class="btn-small btn-danger">Elimina</a></td>
+                    </tr>
+                    <tr>
+                        <td data-label="ID">#103</td>
+                        <td data-label="Nome e Cognome"><strong>Prof. Verdi</strong></td>
+                        <td data-label="Ruolo">Docente</td>
+                        <td data-label="Azioni"><a href="#" class="btn-small btn-danger">Elimina</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="logo" style="margin-bottom: 15px; display: flex; justify-content: center; align-items: center;">
+            <img src="logo_CS_scritta.png" alt="Logo Cuore Sicuro" style="max-height: 75px; width: auto;">
+        </div>
+        <div class="container footer-content" style="padding-top: 40px; border-top: 1px solid rgba(255, 255, 255, 0.2); margin-top: 40px; text-align: center;">
+            <div class="logo" style="color: var(--bg-white); font-weight: 800; font-size: 1.2rem; margin-bottom: 15px; letter-spacing: 1px;">
+                CUORE SICURO
+            </div>
+            <div class="footer-links" style="margin-bottom: 15px; color: rgba(255, 255, 255, 0.5);">
+                <a href="form.html" style="color: var(--bg-white); text-decoration: none; margin: 0 10px;">CONTATTACI</a> | 
+                <a href="chi-siamo.html" style="color: var(--bg-white); text-decoration: none; margin: 0 10px;">CHI SIAMO</a> | 
+                <a href="notizie.html" style="color: var(--bg-white); text-decoration: none; margin: 0 10px;">NOTIZIE</a> |
+                <a href="dashboard.html" style="color: var(--bg-white); text-decoration: none; margin: 0 10px;">ADMIN</a>
+            </div>
+            <p class="copyright" style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem;">
+                © COPYRIGHT 2026 - Cuore Sicuro (Portfolio Showcase)
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        function openTab(tabName) {
+            document.querySelectorAll('.tab-content, .admin-nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            document.getElementById('nav-' + tabName).classList.add('active');
+        }
+
+        document.querySelector('.menu-toggle').addEventListener('click', () => {
+            document.querySelector('.main-nav').classList.toggle('active');
+        });
+
+        // Inizializzazione Grafici Mock
+        window.onload = function() {
+            new Chart(document.getElementById('chartGastaldiTempo'), {
+                type: 'bar',
+                data: { labels: ['Oggi', 'Ieri', 'Ultimi 30gg'], datasets: [{ data: [5, 12, 45], backgroundColor: ['#165175', '#00b67a', '#f39c12'] }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+            });
+            new Chart(document.getElementById('chartSesso'), {
+                type: 'doughnut',
+                data: { labels: ['Maschi', 'Femmine'], datasets: [{ data: [40, 60], backgroundColor: ['#2980b9', '#e74c3c'] }] },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+            new Chart(document.getElementById('chartGruppo'), {
+                type: 'bar',
+                data: { labels: ['Studenti', 'Professori', 'Genitori'], datasets: [{ data: [80, 15, 5], backgroundColor: '#165175' }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+            });
+        };
+    </script>
+</body>
+</html>
